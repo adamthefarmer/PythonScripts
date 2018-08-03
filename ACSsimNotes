@@ -1,0 +1,65 @@
+
+
+    ## ISSUES:
+
+- Ang. momentum is conserved when given a rotation about the x and y axis only. Obviously this also means that omega is time invarient. Any time the z axis has any sort of rotation the sim gets fucky... I dont think this is user error in terms of invalid initial conditions. This is because I set initial conditions such that the SC is only rotating aobut 1 axis and then fed in a small angular acceleration (as described in the body frame) about another axis. This did not look good at all. after 100sih seconds I had MASSIVE angular rates about the x axis.
+
+Notes on this issue: 
+   
+- rotations about ONLY the z-axis are fine. rotations about the z-axis with omega accelerations only in the z axis are okay as well.
+   
+- Makeing the MoI the same about all three principle axes does not fix the issue.
+
+- Might want to print the values of theta and omega and do the math by hand to make sure this isn't a python math error.
+
+    ## THINGS I HAVE CHECKED:
+
+- I have checked all of the matrices that they match what is described in the paper.
+- I have checked that my implimentation of Euler's method works (works for the propogator).
+
+
+    ## THING I MAYBE SHOULD CHECK? IDK, BRUV...
+
+- I have to be integrating thetadot rather than omega, because there is no position in the body frame. Therefore it would be sort of meaningless to integrate omega.
+
+- 
+
+##  UPDATES SINCE JULY 18TH
+
+- Small angle pertubation about the 313Euler inclination angle. This is a small rotation about the y-axis... Looks good!
+
+- Earth's magnetic field model looks good. Patrick says that Basilisk doesn't have a high fidelity magnetic field yet.
+
+- Currently omegaDot and omega blow up to infinity after larger amounts of time.
+
+- Looking into see if the problem is in the hysteresis rods model, if this is integrator error, or if this problem is dues to the equations of motion blowing up over time.
+
+- hurrrry up! waitin on you!
+
+- Yeah so I got rid of the torques due to the hysteresis rods and omega, omegaDot and EPdot still blows up.
+
+- 16 hysteresis rods in the x and y axis with 50 orbits gives damped system which ends up reaching what seems to be an equilibrium EPdot.
+
+- Free rolling satellite ends up blowing up to infinity... probably EoM + integration error.
+
+#### Atmospheric Model
+
+To model drag on satellite decaying orbit over time:
+Cd = 1.28 to .001 depending on orientation: https://www.grc.nasa.gov/WWW/K-12/airplane/shaped.html
+F = 0.5*rho*A*cd*v^2
+
+To model astmospic effects on satellite's attitude:
+
+8 4 0
+
+##  TEST CASES TO BE RUN ON STK
+
+- body role along isolated axis
+- steady state (no role)
+- orbit accuracy
+- full simulation with other parameters
+- full simulation with PolarCube parameters
+
+## LINK TO PAPER:
+
+http://lasp.colorado.edu/home/csswe/files/2012/06/Gerhardt_SSC10_PMAC.pdf
